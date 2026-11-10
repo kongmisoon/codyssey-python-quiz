@@ -1,7 +1,7 @@
 """QuizGame 클래스: 게임 전체(메뉴, 흐름, 저장)를 관리한다."""
 
 from default_quizzes import get_default_quizzes
-from input_utils import get_int_input
+from input_utils import get_int_input, get_text_input
 from quiz import Quiz
 
 
@@ -70,10 +70,21 @@ class QuizGame:
         print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
         print("=" * 40)
 
-    # ---------- 아직 구현되지 않은 기능 (이후 커밋에서 채움) ----------
-
+    # ---------- 퀴즈 추가 ----------
     def add_quiz(self):
-        print("🚧 준비 중입니다.")
+        """문제, 선택지 4개, 정답 번호를 입력받아 새 퀴즈를 등록한다."""
+        print("\n📌 새로운 퀴즈를 추가합니다.\n")
+        question = get_text_input("문제를 입력하세요: ")
+        choices = [
+            get_text_input(f"선택지 {number}: ")
+            for number in range(1, Quiz.CHOICE_COUNT + 1)
+        ]
+        answer = get_int_input(f"정답 번호 (1-{Quiz.CHOICE_COUNT}): ", 1, Quiz.CHOICE_COUNT)
+
+        self.quizzes.append(Quiz(question, choices, answer))
+        print("\n✅ 퀴즈가 추가되었습니다!")
+
+    # ---------- 아직 구현되지 않은 기능 (이후 커밋에서 채움) ----------
 
     def show_quizzes(self):
         print("🚧 준비 중입니다.")
