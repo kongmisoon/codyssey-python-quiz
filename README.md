@@ -25,7 +25,7 @@
 
 ```bash
 git clone <저장소 URL>
-cd quiz-game
+cd codyssey-python-quiz
 python main.py        # 또는 python3 main.py
 ```
 
@@ -54,7 +54,7 @@ python -m unittest discover -s tests -v
 ## 5. 파일 구조
 
 ```
-quiz-game/
+codyssey-python-quiz/
 ├── main.py              # 진입점
 ├── quiz.py              # Quiz 클래스 (출력, 정답 확인, dict 변환)
 ├── quiz_game.py         # QuizGame 클래스 (메뉴, 기능, 저장/불러오기)
@@ -114,4 +114,4 @@ quiz-game/
 
 - 커밋 메시지: `Feat:` / `Fix:` / `Docs:` / `Refactor:` / `Test:` 접두어 + 작업 내용
 - 퀴즈 풀기는 `feature/play-quiz` 브랜치에서 작업한 뒤 `main`에 병합
-- clone 실습: 복제본에서 수정한 줄입니다.
+- clone/pull 실습: 저장소를 clone한 복제본에서 README를 수정해 push한 뒤, 원본 폴더에서 pull로 받아 반영했습니다. (커밋 `62bdd40`)
