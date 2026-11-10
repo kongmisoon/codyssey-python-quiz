@@ -6,7 +6,9 @@ from quiz import Quiz
 
 
 class QuizGame:
-    MENU_WIDTH = 40
+    LINE_WIDTH = 40
+    MENU_ITEMS = ("퀴즈 풀기", "퀴즈 추가", "퀴즈 목록", "점수 확인", "종료")
+    EXIT_CHOICE = len(MENU_ITEMS)
 
     def __init__(self):
         self.quizzes = get_default_quizzes()
@@ -14,18 +16,19 @@ class QuizGame:
         self.best_correct = 0
         self.best_total = 0
 
+    # ---------- 출력 헬퍼 ----------
+    def print_line(self, char="-"):
+        print(char * self.LINE_WIDTH)
+
     # ---------- 메뉴 ----------
     def show_menu(self):
         print()
-        print("=" * self.MENU_WIDTH)
+        self.print_line("=")
         print("        🎯 나만의 퀴즈 게임 🎯")
-        print("=" * self.MENU_WIDTH)
-        print("1. 퀴즈 풀기")
-        print("2. 퀴즈 추가")
-        print("3. 퀴즈 목록")
-        print("4. 점수 확인")
-        print("5. 종료")
-        print("=" * self.MENU_WIDTH)
+        self.print_line("=")
+        for number, title in enumerate(self.MENU_ITEMS, start=1):
+            print(f"{number}. {title}")
+        self.print_line("=")
 
     def handle_choice(self, choice):
         actions = {
@@ -37,11 +40,11 @@ class QuizGame:
         actions[choice]()
 
     def run(self):
-        """메인 루프. 5번(종료)을 선택하면 끝난다."""
+        """메인 루프. 종료 번호를 선택하면 끝난다."""
         while True:
             self.show_menu()
-            choice = get_int_input("선택: ", 1, 5)
-            if choice == 5:
+            choice = get_int_input("선택: ", 1, self.EXIT_CHOICE)
+            if choice == self.EXIT_CHOICE:
                 print("👋 게임을 종료합니다. 안녕히 가세요!")
                 break
             self.handle_choice(choice)
@@ -58,21 +61,33 @@ class QuizGame:
 
         correct = 0
         for number, quiz in enumerate(self.quizzes, start=1):
-            print("\n" + "-" * 40)
-            quiz.display(number)
-            user_answer = get_int_input("\n정답 입력: ", 1, Quiz.CHOICE_COUNT)
-            if quiz.is_correct(user_answer):
-                print("✅ 정답입니다!")
+            if self.ask_question(number, quiz):
                 correct += 1
-            else:
-                print(f"❌ 오답입니다. 정답은 {quiz.answer}번 ({quiz.choices[quiz.answer - 1]})입니다.")
 
+        self.show_result(correct, total)
+
+    def ask_question(self, number, quiz):
+        """한 문제를 출제하고 정답이면 True를 반환한다."""
+        print()
+        self.print_line("-")
+        quiz.display(number)
+        user_answer = get_int_input("\n정답 입력: ", 1, Quiz.CHOICE_COUNT)
+
+        if quiz.is_correct(user_answer):
+            print("✅ 정답입니다!")
+            return True
+        print(f"❌ 오답입니다. 정답은 {quiz.answer}번 ({quiz.choices[quiz.answer - 1]})입니다.")
+        return False
+
+    def show_result(self, correct, total):
+        """결과를 출력하고 최고 점수를 갱신한다."""
         score = round(correct / total * 100)
-        print("\n" + "=" * 40)
+        print()
+        self.print_line("=")
         print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
         if self.update_best_score(score, correct, total):
             print("🎉 새로운 최고 점수입니다!")
-        print("=" * 40)
+        self.print_line("=")
 
     def update_best_score(self, score, correct, total):
         """최고 점수보다 높으면 갱신하고 True를 반환한다."""
@@ -105,10 +120,10 @@ class QuizGame:
             return
 
         print(f"\n📋 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)\n")
-        print("-" * 40)
+        self.print_line("-")
         for number, quiz in enumerate(self.quizzes, start=1):
             print(f"[{number}] {quiz.question}")
-        print("-" * 40)
+        self.print_line("-")
 
     # ---------- 점수 확인 ----------
     def show_best_score(self):
