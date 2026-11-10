@@ -10,7 +10,9 @@ class QuizGame:
 
     def __init__(self):
         self.quizzes = get_default_quizzes()
-        self.best_score = None
+        self.best_score = None  # None이면 아직 퀴즈를 푼 적이 없음
+        self.best_correct = 0
+        self.best_total = 0
 
     # ---------- 메뉴 ----------
     def show_menu(self):
@@ -68,7 +70,18 @@ class QuizGame:
         score = round(correct / total * 100)
         print("\n" + "=" * 40)
         print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
+        if self.update_best_score(score, correct, total):
+            print("🎉 새로운 최고 점수입니다!")
         print("=" * 40)
+
+    def update_best_score(self, score, correct, total):
+        """최고 점수보다 높으면 갱신하고 True를 반환한다."""
+        if self.best_score is None or score > self.best_score:
+            self.best_score = score
+            self.best_correct = correct
+            self.best_total = total
+            return True
+        return False
 
     # ---------- 퀴즈 추가 ----------
     def add_quiz(self):
@@ -97,7 +110,10 @@ class QuizGame:
             print(f"[{number}] {quiz.question}")
         print("-" * 40)
 
-    # ---------- 아직 구현되지 않은 기능 (이후 커밋에서 채움) ----------
-
+    # ---------- 점수 확인 ----------
     def show_best_score(self):
-        print("🚧 준비 중입니다.")
+        """최고 점수를 출력한다. 아직 풀지 않았다면 안내 메시지를 보여 준다."""
+        if self.best_score is None:
+            print("📭 아직 퀴즈를 풀지 않았습니다. '퀴즈 풀기'에 도전해 보세요!")
+            return
+        print(f"\n🏆 최고 점수: {self.best_score}점 ({self.best_total}문제 중 {self.best_correct}문제 정답)")
