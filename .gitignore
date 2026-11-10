@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 실행 중 생성되는 데이터/임시 파일
+state.json
+state.json.tmp
+
+# 에디터/OS
+.vscode/
+.idea/
+.DS_Store
