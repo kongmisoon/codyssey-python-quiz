@@ -109,3 +109,4 @@ quiz-game/
 
 - 커밋 메시지: `Feat:` / `Fix:` / `Docs:` / `Refactor:` / `Test:` 접두어 + 작업 내용
 - 퀴즈 풀기는 `feature/play-quiz` 브랜치에서 작업한 뒤 `main`에 병합
+- clone 실습: 복제본에서 수정한 줄입니다.
